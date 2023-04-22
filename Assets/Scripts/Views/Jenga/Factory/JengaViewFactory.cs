@@ -1,3 +1,4 @@
+using Controllers;
 using DataAccessors;
 using Models;
 using System;
@@ -24,6 +25,13 @@ namespace Views.Jenga.Factory
 
         private GameObject _jengaBlockPrefab;
         private GameObject _jengaGradeLabelPrefab;
+
+        private DiContainer Container;
+
+        public JengaViewFactory(DiContainer container)
+        {
+            Container = container;
+        }
 
         public void Initialize()
         {
@@ -110,8 +118,10 @@ namespace Views.Jenga.Factory
 
         private GameObject CreateBlock(BlockModel blockModel, ref GameObject parent)
         {
-            return GameObject.Instantiate(_jengaBlockPrefab, parent.transform);
-            // TODO pass data
+            BlockController blockController = Container.InstantiatePrefabForComponent<BlockController>(_jengaBlockPrefab, parent.transform);
+            blockController.SetBlockModel(blockModel);
+
+            return blockController.gameObject;
         }
 
         private List<BlockModel> SortJengaModels(List<BlockModel> blockModels)
