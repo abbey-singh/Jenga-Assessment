@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -22,16 +23,18 @@ namespace Views.Jenga.Factory
         private const float OFFSET_BETWEEN_JENGAS = 0.3f;
 
         private GameObject _jengaBlockPrefab;
+        private GameObject _jengaGradeLabelPrefab;
 
         public void Initialize()
         {
             _jengaBlockPrefab = Resources.Load<GameObject>("Prefabs/Block");
+            _jengaGradeLabelPrefab = Resources.Load<GameObject>("Prefabs/GradeLabel");
             _blockHeight = _jengaBlockPrefab.transform.localScale.y;
         }
 
         public GameObject CreateJenga(List<BlockModel> blockModels, ref GameObject parent)
         {
-            // TODO: Create grade label
+            Assert.IsTrue(blockModels != null && blockModels.Count != 0, "Cannot create empty Jenga stack");
 
             GameObject jengaStack = new GameObject("Jenga Stack");
             jengaStack.transform.parent = parent.transform;
@@ -40,6 +43,9 @@ namespace Views.Jenga.Factory
             _numJengas++;
 
             CreateTower(blockModels, ref jengaStack);
+
+            GameObject label = GameObject.Instantiate(_jengaGradeLabelPrefab, jengaStack.transform);
+            label.GetComponent<TextMeshPro>().text = blockModels[0].Grade;
 
             return jengaStack;
         }
