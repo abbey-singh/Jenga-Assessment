@@ -11,7 +11,7 @@ namespace DataAccessors
 {
     public class NetworkingOperations
     {
-        public event Action<List<StackModel>> OnStackDataFetched;
+        public event Action<List<BlockModel>> OnStacksDataFetched;
 
         private UrlHolder _urlHolder;
         private UnityWebRequest _request;
@@ -21,20 +21,20 @@ namespace DataAccessors
             _urlHolder = urlHolder;
         }
 
-        public void StartFetchingStackData()
+        public void StartFetchingStacksData()
         {
             _request = UnityWebRequest.Get(_urlHolder.GetURL());
             var operation = _request.SendWebRequest();
-            operation.completed += FetchStackDataCompleted;
+            operation.completed += FetchStacksDataCompleted;
         }
 
-        private void FetchStackDataCompleted(AsyncOperation obj)
+        private void FetchStacksDataCompleted(AsyncOperation obj)
         {
             string data = _request.downloadHandler.text;
-            List<StackModel> stackModels = JsonConvert.DeserializeObject<List<StackModel>>(data);
+            List<BlockModel> blockModels = JsonConvert.DeserializeObject<List<BlockModel>>(data);
             _request = null;
 
-            OnStackDataFetched?.Invoke(stackModels);
+            OnStacksDataFetched?.Invoke(blockModels);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Models
 {
     [Serializable]
-    public class StackModel
+    public class BlockModel
     {
         [JsonProperty("id")]
         public int Id;
