@@ -2,6 +2,8 @@ using Controllers;
 using DataAccessors;
 using Helpers;
 using Managers;
+using Signals;
+using System;
 using UnityEngine;
 using Views.Jenga.Factory;
 using Zenject;
@@ -23,5 +25,17 @@ public class JengaInstaller : MonoInstaller
         Container.Bind<BlockController>().AsTransient();
 
         Container.BindFactory<BlockController, BlockController.Factory>().FromComponentInNewPrefab(_blockControllerPrefab);
+        
+        Container.Bind<InputController>().AsSingle();
+        Container.Bind<CameraController>().AsSingle();
+
+        InstallSignals();
+    }
+
+    private void InstallSignals()
+    {
+        SignalBusInstaller.Install(Container);
+
+        Container.DeclareSignal<BlockClickedSignal>();
     }
 }

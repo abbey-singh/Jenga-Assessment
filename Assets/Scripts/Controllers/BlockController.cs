@@ -11,6 +11,9 @@ namespace Controllers
 {
     public class BlockController : MonoBehaviour
     {
+        public BlockModel BlockModel { get { return _blockModel; } }
+        public Transform JengaTowerTransform { get { return transform.parent.parent; } }
+
         [SerializeField] MeshRenderer _blockRenderer;
 
         private BlockModel _blockModel;
