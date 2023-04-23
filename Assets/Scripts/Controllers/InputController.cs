@@ -39,7 +39,7 @@ namespace Controllers
                     {
                         var blockController = hitObject.GetComponent<BlockController>();
                         var blockModel = blockController.BlockModel;
-                        var towerTransform = blockController.JengaTowerTransform;
+                        var towerTransform = blockController.JengaStackTransform;
 
                         var signal = new BlockClickedSignal(blockModel, hitObject.transform, towerTransform, eventData.button);
                         _signalBus.Fire(signal);

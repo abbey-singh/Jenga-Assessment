@@ -12,13 +12,17 @@ namespace Controllers
     public class BlockController : MonoBehaviour
     {
         public BlockModel BlockModel { get { return _blockModel; } }
-        public Transform JengaTowerTransform { get { return transform.parent.parent; } }
+        public Transform JengaStackTransform { get { return transform.parent.parent.parent; } }
 
         [SerializeField] MeshRenderer _blockRenderer;
+        [SerializeField] Rigidbody _rigidBody;
 
         private BlockModel _blockModel;
 
         private BlockMaterialsHelper _blockMaterialsHelper;
+
+        private Vector3 _defaultLocalPosition;
+        public Quaternion _defaultLocalRotation;
 
         [Inject]
         public void Init(BlockMaterialsHelper blockMaterialsHelper)
@@ -31,6 +35,23 @@ namespace Controllers
             _blockModel = model;
 
             UpdateBlockMaterial();
+        }
+
+        public void SaveDefaultTransform()
+        {
+            _defaultLocalPosition = transform.localPosition;
+            _defaultLocalRotation = transform.localRotation;
+        }
+
+        public void ApplyDefaultTransform()
+        {
+            transform.localPosition = _defaultLocalPosition;
+            transform.localRotation = _defaultLocalRotation;
+        }
+
+        public void SetPhysics(bool isEnabled)
+        {
+            _rigidBody.isKinematic = !isEnabled;
         }
 
         private void UpdateBlockMaterial()

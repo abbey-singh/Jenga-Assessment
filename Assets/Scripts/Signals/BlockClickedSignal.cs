@@ -8,14 +8,14 @@ namespace Signals
     {
         public BlockModel BlockModel { get; private set; }
         public Transform BlockTransform { get; private set; }
-        public Transform JengaTowerTransform { get; private set; }
+        public Transform JengaStackTransform { get; private set; }
         public InputButton InputButton { get; private set; }
 
-        public BlockClickedSignal(BlockModel blockModel, Transform blockTransform, Transform jengaTowerTransform, InputButton inputButton)
+        public BlockClickedSignal(BlockModel blockModel, Transform blockTransform, Transform jengaStackTransform, InputButton inputButton)
         {
             BlockModel = blockModel;
             BlockTransform = blockTransform;
-            JengaTowerTransform = jengaTowerTransform;
+            JengaStackTransform = jengaStackTransform;
             InputButton = inputButton;
         }
     }

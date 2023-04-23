@@ -20,7 +20,7 @@ namespace Views.Jenga.Factory
         private int _numJengas = 0;
 
         private const float ROW_HEIGHT_BASE_OFFSET = 0.0075f;
-        private const float OFFSET_BETWEEN_BLOCKS = 0;
+        private const float OFFSET_BETWEEN_BLOCKS = 0.0005f;
         private const float OFFSET_BETWEEN_JENGAS = 0.3f;
 
         private GameObject _jengaBlockPrefab;
@@ -40,9 +40,12 @@ namespace Views.Jenga.Factory
             _blockHeight = _jengaBlockPrefab.transform.localScale.y;
         }
 
-        public GameObject CreateJenga(List<BlockModel> blockModels, ref GameObject parent)
+        public StackModel CreateJenga(List<BlockModel> blockModels, ref GameObject parent)
         {
             Assert.IsTrue(blockModels != null && blockModels.Count != 0, "Cannot create empty Jenga stack");
+
+            StackModel stackModel = new StackModel();
+            stackModel.Blocks = new List<BlockController>();
 
             GameObject jengaStack = new GameObject("Jenga Stack");
             jengaStack.transform.parent = parent.transform;
@@ -50,15 +53,17 @@ namespace Views.Jenga.Factory
             jengaStack.transform.localRotation = Quaternion.identity;
             _numJengas++;
 
-            CreateTower(blockModels, ref jengaStack);
+            CreateTower(blockModels, ref jengaStack, ref stackModel);
 
             GameObject label = GameObject.Instantiate(_jengaGradeLabelPrefab, jengaStack.transform);
             label.GetComponent<TextMeshPro>().text = blockModels[0].Grade;
 
-            return jengaStack;
+            stackModel.StackObject = jengaStack;
+
+            return stackModel;
         }
 
-        private GameObject CreateTower(List<BlockModel> blockModels, ref GameObject parent)
+        private GameObject CreateTower(List<BlockModel> blockModels, ref GameObject parent, ref StackModel stackModel)
         {
             GameObject tower = new GameObject("Tower");
             tower.transform.parent = parent.transform;
@@ -83,7 +88,7 @@ namespace Views.Jenga.Factory
                     rowModels.Add(sortedBlockModels[i + 2]);
                 }
 
-                GameObject rowObject = CreateTowerRow(rowModels, ref tower);
+                GameObject rowObject = CreateTowerRow(rowModels, ref tower, ref stackModel);
 
                 float rowHeight = ROW_HEIGHT_BASE_OFFSET + (i / 3) * (_blockHeight + OFFSET_BETWEEN_BLOCKS);
                 rowObject.transform.localPosition = new Vector3(0, rowHeight, 0);
@@ -98,7 +103,7 @@ namespace Views.Jenga.Factory
             return tower;
         }
 
-        private GameObject CreateTowerRow(List<BlockModel> row, ref GameObject parent)
+        private GameObject CreateTowerRow(List<BlockModel> row, ref GameObject parent, ref StackModel stackModel)
         {
             Assert.IsTrue(row.Count > 0 && row.Count <= 3, "Row needs between 1 and 3 blocks");
 
@@ -109,17 +114,20 @@ namespace Views.Jenga.Factory
 
             for (int i = 0; i < row.Count; i++)
             {
-                var block = CreateBlock(row[i], ref towerRow);
+                var block = CreateBlock(row[i], ref towerRow, ref stackModel);
                 block.transform.localPosition = new Vector3(_rowXPositions[i], 0, 0);
+                block.GetComponent<BlockController>().SaveDefaultTransform();
             }
 
             return towerRow;
         }
 
-        private GameObject CreateBlock(BlockModel blockModel, ref GameObject parent)
+        private GameObject CreateBlock(BlockModel blockModel, ref GameObject parent, ref StackModel stackModel)
         {
             BlockController blockController = Container.InstantiatePrefabForComponent<BlockController>(_jengaBlockPrefab, parent.transform);
             blockController.SetBlockModel(blockModel);
+
+            stackModel.Blocks.Add(blockController);
 
             return blockController.gameObject;
         }

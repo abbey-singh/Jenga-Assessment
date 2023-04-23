@@ -37,7 +37,7 @@ namespace Controllers
         {
             _signalBus = signalBus;
 
-            _signalBus.Subscribe<BlockClickedSignal>(b => UpdateCameraFocusPoint(b.JengaTowerTransform, b.InputButton));
+            _signalBus.Subscribe<BlockClickedSignal>(b => UpdateCameraFocusPoint(b.JengaStackTransform, b.InputButton));
         }
 
         private void UpdateCameraFocusPoint(Transform target, InputButton inputButton)

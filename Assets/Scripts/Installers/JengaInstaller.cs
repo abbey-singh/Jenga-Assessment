@@ -31,6 +31,8 @@ public class JengaInstaller : MonoInstaller
         Container.Bind<InputController>().AsSingle();
         Container.Bind<CameraController>().AsSingle();
 
+        Container.Bind<TestMyStackTogglePresenter>().AsSingle();
+
         InstallSignals();
     }
 
@@ -39,5 +41,6 @@ public class JengaInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<BlockClickedSignal>();
+        Container.DeclareSignal<TestMyStackSignal>();
     }
 }
