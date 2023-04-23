@@ -2,6 +2,7 @@ using Controllers;
 using DataAccessors;
 using Helpers;
 using Managers;
+using Presenters;
 using Signals;
 using System;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class JengaInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<BlockMaterialsHelper>().AsSingle();
         Container.Bind<BlockController>().AsTransient();
+        Container.Bind<BlockPanelPresenter>().AsSingle();
 
         Container.BindFactory<BlockController, BlockController.Factory>().FromComponentInNewPrefab(_blockControllerPrefab);
         
