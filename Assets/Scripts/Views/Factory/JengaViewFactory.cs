@@ -14,7 +14,12 @@ namespace Views.Jenga.Factory
 {
     public class JengaViewFactory: IInitializable
     {
-        private List<float> _rowXPositions = new List<float>() { -0.025f - OFFSET_BETWEEN_BLOCKS, 0, 0.025f + OFFSET_BETWEEN_BLOCKS};
+        private List<float> _rowXPositions = new List<float>() 
+        { 
+            -0.025f - OFFSET_BETWEEN_BLOCKS, 
+            0, 
+            0.025f + OFFSET_BETWEEN_BLOCKS
+        };
 
         private float _blockHeight;
         private int _numJengas = 0;
@@ -53,12 +58,12 @@ namespace Views.Jenga.Factory
             jengaStack.transform.localRotation = Quaternion.identity;
             _numJengas++;
 
+            stackModel.StackObject = jengaStack;
+
             CreateTower(blockModels, ref jengaStack, ref stackModel);
 
             GameObject label = GameObject.Instantiate(_jengaGradeLabelPrefab, jengaStack.transform);
             label.GetComponent<TextMeshPro>().text = blockModels[0].Grade;
-
-            stackModel.StackObject = jengaStack;
 
             return stackModel;
         }
@@ -126,6 +131,7 @@ namespace Views.Jenga.Factory
         {
             BlockController blockController = Container.InstantiatePrefabForComponent<BlockController>(_jengaBlockPrefab, parent.transform);
             blockController.SetBlockModel(blockModel);
+            blockController.SetJengaStack(stackModel.StackObject);
 
             stackModel.Blocks.Add(blockController);
 

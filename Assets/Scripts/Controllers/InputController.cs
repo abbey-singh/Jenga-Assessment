@@ -29,6 +29,7 @@ namespace Controllers
         {
             RaycastHit raycastHit;
             Ray ray = Camera.main.ScreenPointToRay(eventData.position);
+
             if (Physics.Raycast(ray, out raycastHit))
             {
                 if (raycastHit.transform != null)

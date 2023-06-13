@@ -12,12 +12,13 @@ namespace Controllers
     public class BlockController : MonoBehaviour
     {
         public BlockModel BlockModel { get { return _blockModel; } }
-        public Transform JengaStackTransform { get { return transform.parent.parent.parent; } }
+        public Transform JengaStackTransform { get { return _jengaStackTransform; } }
 
         [SerializeField] MeshRenderer _blockRenderer;
         [SerializeField] Rigidbody _rigidBody;
 
         private BlockModel _blockModel;
+        private Transform _jengaStackTransform;
 
         private BlockMaterialsHelper _blockMaterialsHelper;
 
@@ -35,6 +36,11 @@ namespace Controllers
             _blockModel = model;
 
             UpdateBlockMaterial();
+        }
+
+        public void SetJengaStack(GameObject jengaStack)
+        {
+            _jengaStackTransform = jengaStack.transform;
         }
 
         public void SaveDefaultTransform()
